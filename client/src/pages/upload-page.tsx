@@ -38,12 +38,20 @@ export default function UploadPage() {
   
   const uploadMutation = useMutation({
     mutationFn: async (formData: FormData) => {
-      const res = await apiRequest('POST', '/api/media', undefined, {
-        method: 'POST',
-        body: formData,
-        headers: {}, // Don't set Content-Type, let the browser set it with the boundary
-      });
-      return await res.json();
+      try {
+        const res = await apiRequest('POST', '/api/media', undefined, {
+          method: 'POST',
+          body: formData,
+          headers: {}, // Don't set Content-Type, let the browser set it with the boundary
+        });
+        if (!res.ok) {
+          throw new Error(`Upload failed with status ${res.status}`);
+        }
+        return await res.json();
+      } catch (error) {
+        console.error('Upload error:', error);
+        throw error;
+      }
     },
     onSuccess: () => {
       toast({
@@ -66,6 +74,16 @@ export default function UploadPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size (10MB limit)
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: 'File too large',
+          description: 'Please select a file smaller than 10MB',
+          variant: 'destructive',
+        });
+        e.target.value = '';
+        return;
+      }
       setSelectedFile(file);
       
       // Determine file type

@@ -20,13 +20,13 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 export default function SettingsPage() {
   const { user } = useAuth();
   const { toast } = useToast();
-  
+
   // Profile form schema
   const profileSchema = z.object({
     fullName: z.string().min(1, "Full name is required"),
     email: z.string().email("Invalid email address"),
   });
-  
+
   // Baby info form schema
   const babyInfoSchema = z.object({
     name: z.string().optional(),
@@ -34,12 +34,12 @@ export default function SettingsPage() {
     gender: z.string().optional(),
     doctorName: z.string().optional(),
   });
-  
+
   // Get baby info
   const { data: babyInfo, isLoading: isLoadingBabyInfo } = useQuery({
     queryKey: ['/api/baby-info'],
   });
-  
+
   // Profile form
   const profileForm = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -48,7 +48,7 @@ export default function SettingsPage() {
       email: user?.email || '',
     },
   });
-  
+
   // Baby info form
   const babyInfoForm = useForm<z.infer<typeof babyInfoSchema>>({
     resolver: zodResolver(babyInfoSchema),
@@ -59,7 +59,7 @@ export default function SettingsPage() {
       doctorName: babyInfo?.doctorName || '',
     },
   });
-  
+
   // Update profile mutation
   const updateProfileMutation = useMutation({
     mutationFn: async (data: z.infer<typeof profileSchema>) => {
@@ -81,7 +81,7 @@ export default function SettingsPage() {
       });
     },
   });
-  
+
   // Update baby info mutation
   const updateBabyInfoMutation = useMutation({
     mutationFn: async (data: z.infer<typeof babyInfoSchema>) => {
@@ -103,15 +103,15 @@ export default function SettingsPage() {
       });
     },
   });
-  
+
   const onProfileSubmit = (data: z.infer<typeof profileSchema>) => {
     updateProfileMutation.mutate(data);
   };
-  
+
   const onBabyInfoSubmit = (data: z.infer<typeof babyInfoSchema>) => {
     updateBabyInfoMutation.mutate(data);
   };
-  
+
   // Update baby info form when data is loaded
   React.useEffect(() => {
     if (babyInfo) {
@@ -123,20 +123,20 @@ export default function SettingsPage() {
       });
     }
   }, [babyInfo, user]);
-  
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      
+
       <div className="flex flex-col md:flex-row flex-1">
         <Sidebar />
-        
+
         <main className="flex-1 md:pl-64 pt-4 pb-20">
           <div className="px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-neutral-500 font-heading mb-6">
               Account Settings
             </h2>
-            
+
             <Card className="mb-6">
               <CardHeader className="border-b border-neutral-200">
                 <CardTitle className="text-lg font-medium text-neutral-500 font-heading">
@@ -146,7 +146,7 @@ export default function SettingsPage() {
                   Update your account information and preferences.
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent className="pt-6">
                 <Form {...profileForm}>
                   <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-6">
@@ -157,7 +157,7 @@ export default function SettingsPage() {
                           {user?.fullName?.substring(0, 2) || user?.username?.substring(0, 2) || 'U'}
                         </AvatarFallback>
                       </Avatar>
-                      
+
                       <div className="mt-4 sm:mt-0 sm:ml-4 flex">
                         <Button type="button" variant="outline" size="sm">
                           Change
@@ -167,7 +167,7 @@ export default function SettingsPage() {
                         </Button>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
                       <FormField
                         control={profileForm.control}
@@ -182,7 +182,7 @@ export default function SettingsPage() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={profileForm.control}
                         name="email"
@@ -197,7 +197,7 @@ export default function SettingsPage() {
                         )}
                       />
                     </div>
-                    
+
                     <div className="flex justify-end">
                       <Button 
                         type="submit" 
@@ -210,7 +210,7 @@ export default function SettingsPage() {
                 </Form>
               </CardContent>
             </Card>
-            
+
             <Card className="mb-6">
               <CardHeader className="border-b border-neutral-200">
                 <CardTitle className="text-lg font-medium text-neutral-500 font-heading">
@@ -220,7 +220,7 @@ export default function SettingsPage() {
                   Update your baby's details.
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent className="pt-6">
                 <Form {...babyInfoForm}>
                   <form onSubmit={babyInfoForm.handleSubmit(onBabyInfoSubmit)} className="space-y-6">
@@ -238,7 +238,7 @@ export default function SettingsPage() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={babyInfoForm.control}
                         name="dueDate"
@@ -252,7 +252,7 @@ export default function SettingsPage() {
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={babyInfoForm.control}
                         name="gender"
@@ -274,30 +274,8 @@ export default function SettingsPage() {
                             <FormMessage />
                           </FormItem>
                         )}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Gender (if known)</FormLabel>
-                            <Select
-                              value={field.value}
-                              onValueChange={field.onChange}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Not known yet" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="">Not known yet</SelectItem>
-                                <SelectItem value="boy">Boy</SelectItem>
-                                <SelectItem value="girl">Girl</SelectItem>
-                                <SelectItem value="twins">Twins</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
                       />
-                      
+
                       <FormField
                         control={babyInfoForm.control}
                         name="doctorName"
@@ -312,7 +290,7 @@ export default function SettingsPage() {
                         )}
                       />
                     </div>
-                    
+
                     <div className="flex justify-end">
                       <Button 
                         type="submit" 
@@ -325,7 +303,7 @@ export default function SettingsPage() {
                 </Form>
               </CardContent>
             </Card>
-            
+
             <Card>
               <CardHeader className="border-b border-neutral-200">
                 <CardTitle className="text-lg font-medium text-neutral-500 font-heading">
@@ -335,7 +313,7 @@ export default function SettingsPage() {
                   Manage your app settings and notifications.
                 </CardDescription>
               </CardHeader>
-              
+
               <CardContent className="pt-6">
                 <div className="space-y-6">
                   <div className="sm:flex sm:items-center sm:justify-between">
@@ -349,7 +327,7 @@ export default function SettingsPage() {
                       <Switch defaultChecked />
                     </div>
                   </div>
-                  
+
                   <div className="sm:flex sm:items-center sm:justify-between">
                     <div>
                       <h4 className="text-sm font-medium text-neutral-500">Push Notifications</h4>
@@ -361,7 +339,7 @@ export default function SettingsPage() {
                       <Switch defaultChecked />
                     </div>
                   </div>
-                  
+
                   <div className="sm:flex sm:items-center sm:justify-between">
                     <div>
                       <h4 className="text-sm font-medium text-neutral-500">Dark Mode</h4>
@@ -378,7 +356,7 @@ export default function SettingsPage() {
             </Card>
           </div>
         </main>
-        
+
         <MobileNavigation />
       </div>
     </div>
