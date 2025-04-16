@@ -21,6 +21,8 @@ export function ProtectedRoute({
     );
   }
 
+  console.log("Protected Route - User:", user, "Path:", path);
+
   if (!user) {
     return (
       <Route path={path}>

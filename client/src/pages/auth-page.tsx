@@ -55,14 +55,13 @@ export default function AuthPage() {
     },
   });
 
-  const onLoginSubmit = (values: z.infer<typeof loginSchema>) => {
-    loginMutation.mutate(values, {
-      onSuccess: () => {
-        console.log("Login successful, redirecting to home");
-        queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-        setLocation('/');
-      }
-    });
+  const onLoginSubmit = async (values: z.infer<typeof loginSchema>) => {
+    try {
+      await loginMutation.mutateAsync(values);
+      // Navigation will be handled in the mutation's onSuccess callback
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
 
   const onRegisterSubmit = (values: z.infer<typeof registerSchema>) => {
