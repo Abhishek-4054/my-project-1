@@ -33,6 +33,16 @@ export const babyInfo = pgTable("baby_info", {
   doctorName: text("doctor_name"),
 });
 
+export const premiumVideos = pgTable("premium_videos", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  thumbnailUrl: text("thumbnail_url"),
+  videoUrl: text("video_url").notNull(),
+  isPremium: varchar("is_premium", { length: 5 }).default("true"), // Consider using a boolean type if your database supports it
+});
+
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -60,6 +70,14 @@ export const insertBabyInfoSchema = createInsertSchema(babyInfo).pick({
   doctorName: true,
 });
 
+export const insertPremiumVideoSchema = createInsertSchema(premiumVideos).pick({
+    title: true,
+    description: true,
+    thumbnailUrl: true,
+    videoUrl: true,
+    isPremium: true,
+})
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
@@ -68,6 +86,10 @@ export type Media = typeof media.$inferSelect;
 
 export type InsertBabyInfo = z.infer<typeof insertBabyInfoSchema>;
 export type BabyInfo = typeof babyInfo.$inferSelect;
+
+export type InsertPremiumVideo = z.infer<typeof insertPremiumVideoSchema>;
+export type PremiumVideo = typeof premiumVideos.$inferSelect;
+
 
 // Login data type
 export type LoginData = Pick<InsertUser, "username" | "password">;
