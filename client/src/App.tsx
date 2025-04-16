@@ -6,6 +6,9 @@ import AuthPage from "@/pages/auth-page";
 import TimelinePage from "@/pages/timeline-page";
 import UploadPage from "@/pages/upload-page";
 import SettingsPage from "@/pages/settings-page";
+import MemoriesPage from "@/pages/memories-page";
+import MilestonesPage from "@/pages/milestones-page";
+import { Footer } from "@/components/layout/footer";
 import { ProtectedRoute } from "./lib/protected-route";
 import { AuthProvider, useAuth } from "./hooks/use-auth";
 import { Loader2 } from "lucide-react";
@@ -28,6 +31,8 @@ function AppRoutes() {
       <ProtectedRoute path="/timeline" component={TimelinePage} />
       <ProtectedRoute path="/upload" component={UploadPage} />
       <ProtectedRoute path="/settings" component={SettingsPage} />
+      <ProtectedRoute path="/memories" component={MemoriesPage} />
+      <ProtectedRoute path="/milestones" component={MilestonesPage} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
