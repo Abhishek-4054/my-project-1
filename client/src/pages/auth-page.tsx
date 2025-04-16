@@ -59,17 +59,8 @@ export default function AuthPage() {
     loginMutation.mutate(values, {
       onSuccess: () => {
         console.log("Login successful, redirecting to home");
-        // Force invalidation of the user query to ensure we get the latest data
         queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-        
-        // Force a data refetch after invalidation
-        queryClient.refetchQueries({ queryKey: ["/api/user"] }).then(() => {
-          // Redirect after successful refetch
-          setLocation('/');
-        }).catch(() => {
-          // Fallback in case refetch fails
-          setTimeout(() => setLocation('/'), 300);
-        });
+        setLocation('/');
       }
     });
   };
