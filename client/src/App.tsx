@@ -33,6 +33,8 @@ function AppRoutes() {
       <ProtectedRoute path="/settings" component={SettingsPage} />
       <ProtectedRoute path="/memories" component={MemoriesPage} />
       <ProtectedRoute path="/milestones" component={MilestonesPage} />
+      <ProtectedRoute path="/parenting-tips" component={ParentingTipsPage} />
+      <ProtectedRoute path="/development-guide" component={DevelopmentGuidePage} />
       {/* Fallback to 404 */}
       <Route component={NotFound} />
     </Switch>
