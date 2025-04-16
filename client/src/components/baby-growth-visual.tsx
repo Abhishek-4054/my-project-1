@@ -43,7 +43,9 @@ export function BabyGrowthVisual({ month, week }: BabyGrowthVisualProps) {
     if (week <= 24) return "https://cdn-icons-png.flaticon.com/512/4378/4378482.png";
     if (week <= 32) return "https://cdn-icons-png.flaticon.com/512/4378/4378446.png";
     return "https://cdn-icons-png.flaticon.com/512/4378/4378391.png";
-  }; Development milestones by week
+  }
+  
+  // Development milestones by week
   const getDevelopmentMilestones = () => {
     if (currentWeek <= 4) {
       return [
