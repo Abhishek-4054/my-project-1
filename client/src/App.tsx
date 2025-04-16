@@ -8,6 +8,8 @@ import UploadPage from "@/pages/upload-page";
 import SettingsPage from "@/pages/settings-page";
 import MemoriesPage from "@/pages/memories-page";
 import MilestonesPage from "@/pages/milestones-page";
+import ParentingTipsPage from "@/pages/parenting-tips-page";
+import DevelopmentGuidePage from "@/pages/development-guide-page";
 import { Footer } from "@/components/layout/footer";
 import { ProtectedRoute } from "./lib/protected-route";
 import { AuthProvider, useAuth } from "./hooks/use-auth";
