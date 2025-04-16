@@ -91,16 +91,19 @@ export default function AuthPage() {
       <Card className="w-full max-w-md">
         <CardContent className="pt-6">
           <div className="text-center">
-            <img 
-              className="mx-auto h-20 w-auto" 
-              src="https://cdn-icons-png.flaticon.com/512/2966/2966334.png" 
-              alt="Baby Radiology Logo" 
-            />
-            <h2 className="mt-6 text-3xl font-bold font-heading text-primary">Baby Radiology Gallery</h2>
+            <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full border-4 border-primary/40 bg-primary/10 flex items-center justify-center">
+              <img 
+                className="mx-auto h-16 w-auto" 
+                src="https://cdn-icons-png.flaticon.com/512/3281/3281361.png" 
+                alt="The First Journey Logo" 
+              />
+            </div>
+            <h2 className="mt-6 text-3xl font-bold font-heading text-primary">The First Journey</h2>
+            <h3 className="text-md font-medium text-primary/70">Celebrate Every Moment</h3>
             <p className="mt-2 text-sm text-neutral-400">
               {authTab === 'login' 
-                ? 'Sign in to continue to your baby\'s journey' 
-                : 'Create an account to start tracking your baby\'s development'}
+                ? 'Sign in to continue documenting your baby\'s precious journey' 
+                : 'Create an account to start capturing magical milestones of your little one'}
             </p>
           </div>
 

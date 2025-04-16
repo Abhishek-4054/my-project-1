@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link, useLocation } from 'wouter';
-import { Home, Calendar, Upload, Settings, LogOut } from 'lucide-react';
+import { Home, Calendar, Upload, Settings, LogOut, Camera, Book, Baby, Heart } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { id: 'home', label: 'My Journey', path: '/', icon: Home },
-  { id: 'timeline', label: 'Timeline', path: '/timeline', icon: Calendar },
-  { id: 'upload', label: 'Upload Media', path: '/upload', icon: Upload },
-  { id: 'settings', label: 'Settings', path: '/settings', icon: Settings },
+  { id: 'home', label: 'Dashboard', path: '/', icon: Home, color: 'text-purple-500' },
+  { id: 'timeline', label: 'Timeline', path: '/timeline', icon: Calendar, color: 'text-blue-500' },
+  { id: 'memories', label: 'Memory Book', path: '/memories', icon: Book, color: 'text-emerald-500' },
+  { id: 'upload', label: 'Add Moments', path: '/upload', icon: Camera, color: 'text-amber-500' },
+  { id: 'milestones', label: 'Milestones', path: '/milestones', icon: Heart, color: 'text-pink-500' },
+  { id: 'settings', label: 'Settings', path: '/settings', icon: Settings, color: 'text-slate-500' },
 ];
 
 export function Sidebar() {
