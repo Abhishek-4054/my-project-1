@@ -61,10 +61,15 @@ export default function AuthPage() {
         console.log("Login successful, redirecting to home");
         // Force invalidation of the user query to ensure we get the latest data
         queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-        // Use a small delay to ensure the query client has time to process the invalidation
-        setTimeout(() => {
+        
+        // Force a data refetch after invalidation
+        queryClient.refetchQueries({ queryKey: ["/api/user"] }).then(() => {
+          // Redirect after successful refetch
           setLocation('/');
-        }, 100);
+        }).catch(() => {
+          // Fallback in case refetch fails
+          setTimeout(() => setLocation('/'), 300);
+        });
       }
     });
   };
@@ -78,10 +83,15 @@ export default function AuthPage() {
         console.log("Registration successful, redirecting to home");
         // Force invalidation of the user query to ensure we get the latest data
         queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-        // Use a small delay to ensure the query client has time to process the invalidation
-        setTimeout(() => {
+        
+        // Force a data refetch after invalidation
+        queryClient.refetchQueries({ queryKey: ["/api/user"] }).then(() => {
+          // Redirect after successful refetch
           setLocation('/');
-        }, 100);
+        }).catch(() => {
+          // Fallback in case refetch fails
+          setTimeout(() => setLocation('/'), 300);
+        });
       }
     });
   };

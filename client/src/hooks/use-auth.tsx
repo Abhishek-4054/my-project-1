@@ -43,9 +43,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     },
     onError: (error: Error) => {
+      console.error("Login error:", error);
       toast({
         title: "Login failed",
-        description: error.message || "Invalid username or password",
+        description: "Invalid username or password. Please try again.",
         variant: "destructive",
       });
     },
@@ -64,9 +65,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     },
     onError: (error: Error) => {
+      console.error("Registration error:", error);
       toast({
         title: "Registration failed",
-        description: error.message || "Could not create account",
+        description: error.message?.includes("Username already exists") 
+          ? "This username is already taken. Please choose another one." 
+          : "Could not create your account. Please check your information and try again.",
         variant: "destructive",
       });
     },
@@ -84,9 +88,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     },
     onError: (error: Error) => {
+      console.error("Logout error:", error);
       toast({
         title: "Logout failed",
-        description: error.message,
+        description: "Could not log out. Please try again.",
         variant: "destructive",
       });
     },
