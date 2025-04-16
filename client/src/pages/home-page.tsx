@@ -8,9 +8,13 @@ import { Media } from '@shared/schema';
 import { MediaCard } from '@/components/ui/media-card';
 import { Button } from '@/components/ui/button';
 import { MediaViewer } from '@/components/media-viewer';
-import { Info } from 'lucide-react';
+import { Info, RefreshCw } from 'lucide-react';
 import { Link } from 'wouter';
 import { Skeleton } from '@/components/ui/skeleton';
+import { ProgressTracker } from '@/components/progress-tracker';
+import { ParentingTips } from '@/components/parenting-tips';
+import { BabyGrowthVisual } from '@/components/baby-growth-visual';
+import { PreparationChecklist } from '@/components/preparation-checklist';
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -248,6 +252,53 @@ export default function HomePage() {
               </div>
             )}
             
+            {/* Week-by-Week Pregnancy Progress Tracker */}
+            <div className="mt-12 mb-8">
+              <h3 className="text-xl font-semibold text-primary mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Pregnancy Tracker
+              </h3>
+              <ProgressTracker 
+                currentWeek={currentMonth * 4}
+                dueDate={user?.dueDate}
+              />
+            </div>
+            
+            {/* Baby Growth Visual */}
+            <div className="mt-10 mb-8">
+              <h3 className="text-xl font-semibold text-primary mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                Baby Development
+              </h3>
+              <BabyGrowthVisual month={currentMonth} />
+            </div>
+            
+            {/* Parenting Tips Section */}
+            <div className="mt-10 mb-8">
+              <h3 className="text-xl font-semibold text-primary mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Parenting Resources
+              </h3>
+              <ParentingTips />
+            </div>
+            
+            {/* Preparation Checklist */}
+            <div className="mt-10 mb-8">
+              <h3 className="text-xl font-semibold text-primary mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                Preparation Checklist
+              </h3>
+              <PreparationChecklist />
+            </div>
+
             {/* Monthly milestone cards - only show if there are images already */}
             {recentMedia && recentMedia.length > 0 && (
               <div className="mt-12">
