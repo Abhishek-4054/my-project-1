@@ -15,6 +15,7 @@ import { ProgressTracker } from '@/components/progress-tracker';
 import { ParentingTips } from '@/components/parenting-tips';
 import { BabyGrowthVisual } from '@/components/baby-growth-visual';
 import { PreparationChecklist } from '@/components/preparation-checklist';
+import { InspirationalMessage } from '@/components/inspirational-message';
 
 export default function HomePage() {
   const { user } = useAuth();
@@ -118,6 +119,10 @@ export default function HomePage() {
               </div>
             </div>
 
+            <div className="mb-6">
+              <InspirationalMessage />
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div className="bg-white overflow-hidden shadow-md rounded-xl border border-primary/10">
                 <div className="px-6 py-5">
