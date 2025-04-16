@@ -104,7 +104,7 @@ export default function AuthPage() {
             <div className="relative mx-auto h-24 w-24 overflow-hidden rounded-full border-4 border-primary/40 bg-primary/10 flex items-center justify-center">
               <img 
                 className="mx-auto h-16 w-auto" 
-                src="https://cdn-icons-png.flaticon.com/512/3281/3281361.png" 
+                src="https://cdn-icons-png.flaticon.com/512/2102/2102805.png" 
                 alt="The First Journey Logo" 
               />
             </div>

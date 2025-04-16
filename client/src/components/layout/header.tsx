@@ -51,7 +51,7 @@ export function Header() {
             <p className="text-xs text-primary/60">Celebrate Every Moment</p>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-6">
           <div className="hidden md:flex space-x-1">
             <button 
@@ -73,21 +73,21 @@ export function Header() {
               Upload
             </button>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <button type="button" className="p-2 rounded-full text-primary/80 hover:bg-primary/5 hover:text-primary transition-colors">
               <span className="sr-only">View notifications</span>
               <Bell className="h-5 w-5" />
             </button>
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center space-x-2 text-sm font-medium outline-none">
                 <Avatar className="h-9 w-9 border-2 border-primary/20">
-                  <AvatarImage src={`https://api.dicebear.com/7.x/personas/svg?seed=${fullName}`} />
+                  <AvatarImage src={`https://api.dicebear.com/7.x/personas/svg?seed=${user?.username || 'guest'}`} />
                   <AvatarFallback className="bg-primary/10 text-primary">{getInitials(fullName)}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              
+
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-4 py-3">
                   <p className="text-sm font-medium text-neutral-800">{fullName}</p>
