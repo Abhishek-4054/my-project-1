@@ -120,7 +120,7 @@ export default function UploadPage() {
     formData.append('file', selectedFile);
     formData.append('mediaType', values.mediaType);
     formData.append('month', values.month.toString());
-    formData.append('week', values.week?.toString() || '');
+    formData.append('week', values.week === 'not-specified' ? '' : values.week?.toString() || '');
     formData.append('emotionTag', values.emotionTag);
     formData.append('notes', values.notes || '');
     
@@ -214,7 +214,7 @@ export default function UploadPage() {
                                 </SelectTrigger>
                               </FormControl>
                               <SelectContent>
-                                <SelectItem value="">Not specified</SelectItem>
+                                <SelectItem value="not-specified">Not specified</SelectItem>
                                 {Array.from({ length: 40 }, (_, i) => i + 1).map((week) => (
                                   <SelectItem key={week} value={week.toString()}>
                                     Week {week}
