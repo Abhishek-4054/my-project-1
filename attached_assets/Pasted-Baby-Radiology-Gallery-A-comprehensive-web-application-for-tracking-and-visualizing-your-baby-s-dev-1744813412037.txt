@@ -1,0 +1,254 @@
+Baby Radiology Gallery
+A comprehensive web application for tracking and visualizing your baby's development journey through radiology images.
+Features
+•	Timeline view of baby's development from month 1-9
+•	Upload and organize ultrasound images and videos
+•	Emotion tagging for baby's movements
+•	Secure user authentication
+•	Responsive design for mobile and desktop
+Getting Started
+1.	Fork this template
+2.	Run the development server:
+npm run dev
+3.	Visit the app at http://localhost:5000
+Demo Account
+Username: demo Password: password
+Tech Stack
+•	React + TypeScript
+•	Express.js backend
+•	SQLite database
+•	Tailwind CSS for styling
+•	Vite for development
+License
+MIT License - Feel free to use this template for your projects
+
+🧩 Baby Radiology Gallery – Full App Flow (Screen by Screen)
+1️⃣ Launch Screen
+Message:
+Welcome to Baby Radiology Gallery, an app showcasing the journey of life from womb to world.
+Action:
+👉 Tap to Enter
+
+2️⃣ Sign Up Screen
+Message:
+Create your account to explore your baby's development.
+Inputs:
+
+Full Name
+
+Email
+
+Password
+
+Confirm Password
+
+Baby's Due Date or Month
+
+Country
+
+Action:
+👉 Create Account
+
+3️⃣ Login Screen
+Message:
+Already have an account? Log in to continue.
+Inputs:
+
+Email
+
+Password
+
+Actions:
+
+👉 Login
+
+🔁 Forgot Password?
+
+4️⃣ Welcome / Home Screen
+Message:
+Welcome back, [User]! Start exploring your baby’s radiology gallery.
+Sections:
+
+👶 My Journey
+
+📈 Timeline
+
+📁 Upload Media
+
+⚙️ Settings
+
+5️⃣ Pregnancy Timeline Screen (1–9 Months)
+Message:
+Select a month to view radiology data and baby development.
+UI:
+Horizontal or tab-style month selectors:
+📆 Month 1 | Month 2 | … | Month 9
+
+6️⃣ Monthly Media Gallery Screen
+Message:
+Explore baby's radiology content by emotion.
+Emotion Categories (Tabs):
+
+😊 Happy
+
+😴 Sleepy
+
+🤗 Playful
+
+🦶 Kicking
+
+🤔 Calm
+
+Each Category Shows:
+
+Images
+
+Videos
+
+Doctor's Notes
+
+7️⃣ Media Viewer Screen (Full Image/Video)
+Message:
+View media in full screen with zoom, rotate, and note options.
+Options:
+
+🔍 Zoom
+
+📝 View Note
+
+🔗 Share
+
+💾 Download
+
+8️⃣ Upload Media Screen
+Message:
+Upload radiology image or video of your baby.
+Inputs:
+
+📆 Month
+
+😊 Emotion Tag
+
+📤 Select File (Image/Video)
+
+📝 Optional Note
+
+Action:
+👉 Upload
+
+9️⃣ Doctor Notes Screen (Optional for Doctors Only)
+Message:
+Add or review medical observations for a specific media file.
+Fields:
+
+Observation Type (Normal/Concerned/Follow-up)
+
+Doctor's Comments
+
+Optional Prescription / Advice PDF Upload
+
+🔟 Timeline View Screen
+Message:
+See a visual journey of your baby’s growth month-by-month.
+Highlights:
+
+Key Development Milestones
+
+Date of Scans
+
+Progress Bars
+
+Click to jump into month
+
+1️⃣1️⃣ Profile & Settings Screen
+Message:
+Manage your account, preferences, and baby info.
+Options:
+
+Update Email/Password
+
+Add/Update Baby Info
+
+Change Language
+
+Notification Settings
+
+Logout
+
+1️⃣2️⃣ Share Link Preview Screen
+Message:
+Here is your media share link. You can copy or send it directly.
+Options:
+
+🔗 Copy to Clipboard
+
+📩 Share via WhatsApp / Email
+
+⏳ Set Expiry (optional)
+
+1️⃣3️⃣ Notification Center Screen
+Message:
+See updates like new uploads, doctor comments, or shared content.
+Types of Notifications:
+
+New Media Uploaded
+
+Doctor Note Added
+
+Share Link Accessed
+
+Monthly Milestone Reached
+
+1️⃣4️⃣ Help / Support Screen
+Message:
+Need help or want to contact support?
+Options:
+
+📞 Contact Us
+
+💬 FAQs
+
+📧 Submit a Ticket
+
+1️⃣5️⃣ Logout Confirmation Modal
+Message:
+Are you sure you want to logout?
+Buttons:
+
+✅ Yes, Logout
+
+❌ Cancel
+
+🧠 Bonus: AI & Future Screens (Optional)
+✅ AI Emotion Auto-Tagger Screen (Admin/Doctor Panel)
+Message:
+AI detected baby movement and categorized it as: "Kicking".
+Options:
+
+Approve Tag
+
+Edit Emotion
+
+Save to Gallery
+
+🎁 Monthly Memory Recap (End of Each Month)
+Message:
+Your baby’s Month 4 journey is ready as a memory card!
+Options:
+
+View Collage
+
+Download PDF Report
+
+Share on Social Media
+
+🧾 Report Generator Screen
+Message:
+Create a compiled report of radiology data and development history.
+Output:
+
+Printable / Downloadable PDF
+
+Embedded Images, Notes, and Dates
+
+Doctor Signature (if applicable)
