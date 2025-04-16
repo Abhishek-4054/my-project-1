@@ -93,18 +93,18 @@ export function Sidebar() {
                 Resources
               </h3>
               <div className="mt-3 space-y-1.5">
-                <a href="#" className="group flex items-center px-3 py-2 text-sm font-medium rounded-lg text-neutral-500 hover:bg-neutral-50 hover:text-primary">
+                <Link to="/parenting-tips" className="group flex items-center px-3 py-2 text-sm font-medium rounded-lg text-neutral-500 hover:bg-neutral-50 hover:text-primary">
                   <div className="flex items-center justify-center h-8 w-8 rounded-full mr-3 bg-blue-50 text-blue-500">
                     <Book className="h-4 w-4" />
                   </div>
                   <span>Parenting Tips</span>
-                </a>
-                <a href="#" className="group flex items-center px-3 py-2 text-sm font-medium rounded-lg text-neutral-500 hover:bg-neutral-50 hover:text-primary">
+                </Link>
+                <Link to="/development-guide" className="group flex items-center px-3 py-2 text-sm font-medium rounded-lg text-neutral-500 hover:bg-neutral-50 hover:text-primary">
                   <div className="flex items-center justify-center h-8 w-8 rounded-full mr-3 bg-green-50 text-green-500">
                     <Baby className="h-4 w-4" />
                   </div>
                   <span>Development Guide</span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
