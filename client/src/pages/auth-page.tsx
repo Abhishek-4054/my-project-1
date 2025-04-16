@@ -98,12 +98,12 @@ export default function AuthPage() {
                 alt="The First Journey Logo" 
               />
             </div>
-            <h2 className="mt-6 text-3xl font-bold font-heading text-primary">The First Journey</h2>
-            <h3 className="text-md font-medium text-primary/70">Celebrate Every Moment</h3>
+            <h2 className="mt-6 text-3xl font-bold font-heading text-primary">Welcome to Parenthood</h2>
+            <h3 className="text-md font-medium text-primary/70">Where Little Miracles Begin</h3>
             <p className="mt-2 text-sm text-neutral-400">
               {authTab === 'login' 
-                ? 'Sign in to continue documenting your baby\'s precious journey' 
-                : 'Create an account to start capturing magical milestones of your little one'}
+                ? 'Welcome back! Continue your beautiful journey of capturing precious moments with your little one' 
+                : 'Begin your amazing adventure of documenting every smile, giggle, and milestone of your growing miracle'}
             </p>
           </div>
 
