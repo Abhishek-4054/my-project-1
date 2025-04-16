@@ -19,6 +19,7 @@ import { useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Redirect } from "wouter";
+import { queryClient } from "@/lib/queryClient";
 
 export default function AuthPage() {
   const [, setLocation] = useLocation();
@@ -57,7 +58,13 @@ export default function AuthPage() {
   const onLoginSubmit = (values: z.infer<typeof loginSchema>) => {
     loginMutation.mutate(values, {
       onSuccess: () => {
-        setLocation('/');
+        console.log("Login successful, redirecting to home");
+        // Force invalidation of the user query to ensure we get the latest data
+        queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+        // Use a small delay to ensure the query client has time to process the invalidation
+        setTimeout(() => {
+          setLocation('/');
+        }, 100);
       }
     });
   };
@@ -68,7 +75,13 @@ export default function AuthPage() {
     
     registerMutation.mutate(userData, {
       onSuccess: () => {
-        setLocation('/');
+        console.log("Registration successful, redirecting to home");
+        // Force invalidation of the user query to ensure we get the latest data
+        queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+        // Use a small delay to ensure the query client has time to process the invalidation
+        setTimeout(() => {
+          setLocation('/');
+        }, 100);
       }
     });
   };
