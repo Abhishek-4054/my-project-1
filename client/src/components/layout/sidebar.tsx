@@ -22,9 +22,16 @@ export function Sidebar() {
   };
 
   return (
-    <div className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 md:pt-16 bg-white border-r border-neutral-200">
+    <div className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 md:pt-16 bg-white border-r border-primary/5 shadow-sm">
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-        <nav className="mt-5 px-2 space-y-1">
+        <div className="px-4 mb-6">
+          <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
+            <h3 className="text-primary font-medium mb-1 text-sm">Your Baby's Journey</h3>
+            <p className="text-xs text-neutral-500">Tracking precious moments through your pregnancy and beyond.</p>
+          </div>
+        </div>
+        
+        <nav className="px-3 space-y-1.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = (location === item.path) || 
@@ -35,35 +42,56 @@ export function Sidebar() {
                 key={item.id}
                 href={item.path}
                 className={cn(
-                  "group flex items-center px-2 py-2 text-base font-medium rounded-md",
+                  "group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150",
                   isActive 
-                    ? "bg-primary bg-opacity-10 text-primary" 
-                    : "text-neutral-400 hover:bg-neutral-100 hover:text-primary"
+                    ? "bg-primary/10 text-primary" 
+                    : "text-neutral-500 hover:bg-neutral-50 hover:text-primary"
                 )}
               >
-                <Icon className="mr-4 h-6 w-6" />
-                {item.label}
+                <div className={cn(
+                  "flex items-center justify-center h-8 w-8 rounded-full mr-3",
+                  isActive 
+                    ? "bg-primary/20" 
+                    : `bg-neutral-100 ${item.color} group-hover:bg-primary/10 transition-colors duration-150`
+                )}>
+                  <Icon className="h-4 w-4" />
+                </div>
+                <span>{item.label}</span>
               </Link>
             );
           })}
         </nav>
+        
+        <div className="px-3 mt-8">
+          <h3 className="px-3 text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+            Resources
+          </h3>
+          <div className="mt-3 space-y-1.5">
+            <a href="#" className="group flex items-center px-3 py-2 text-sm font-medium rounded-lg text-neutral-500 hover:bg-neutral-50 hover:text-primary">
+              <div className="flex items-center justify-center h-8 w-8 rounded-full mr-3 bg-blue-50 text-blue-500">
+                <Book className="h-4 w-4" />
+              </div>
+              <span>Parenting Tips</span>
+            </a>
+            <a href="#" className="group flex items-center px-3 py-2 text-sm font-medium rounded-lg text-neutral-500 hover:bg-neutral-50 hover:text-primary">
+              <div className="flex items-center justify-center h-8 w-8 rounded-full mr-3 bg-green-50 text-green-500">
+                <Baby className="h-4 w-4" />
+              </div>
+              <span>Development Guide</span>
+            </a>
+          </div>
+        </div>
       </div>
       
-      <div className="flex-shrink-0 flex border-t border-neutral-200 p-4">
+      <div className="flex-shrink-0 flex border-t border-neutral-200 p-3">
         <button
           onClick={handleLogout}
-          className="flex-shrink-0 group block w-full"
+          className="flex items-center px-3 py-2 w-full rounded-lg text-red-500 hover:bg-red-50 transition-colors"
         >
-          <div className="flex items-center">
-            <div>
-              <LogOut className="h-6 w-6 text-neutral-400 group-hover:text-primary" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-neutral-400 group-hover:text-primary">
-                Logout
-              </p>
-            </div>
+          <div className="flex items-center justify-center h-8 w-8 rounded-full mr-3 bg-red-50">
+            <LogOut className="h-4 w-4" />
           </div>
+          <span className="text-sm font-medium">Sign out</span>
         </button>
       </div>
     </div>
