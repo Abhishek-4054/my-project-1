@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -110,19 +111,13 @@ export function ParentingTips() {
     ]
   };
   
-  const categories: TipCategory[] = [
-    weeklyTips,
-    nutritionTips,
-    wellbeingTips
-  ];
-  
-  // Find the active category
+  const categories: TipCategory[] = [weeklyTips, nutritionTips, wellbeingTips];
   const activeCategory = categories.find(cat => cat.id === activeTab) || categories[0];
   
   return (
     <Card className="border border-primary/10 shadow-md">
-      <CardContent className="p-6">
-        <h3 className="text-xl font-semibold text-primary mb-4 flex items-center">
+      <CardContent className="p-4 sm:p-6">
+        <h3 className="text-lg sm:text-xl font-semibold text-primary mb-4 flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -130,26 +125,26 @@ export function ParentingTips() {
         </h3>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-3 mb-4">
+          <TabsList className="grid grid-cols-3 mb-4 w-full">
             {categories.map(category => (
               <TabsTrigger 
                 key={category.id} 
                 value={category.id}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center px-2 sm:px-4"
               >
-                <span className="mr-1.5">{category.icon}</span>
-                <span>{category.label}</span>
+                <span className="hidden sm:inline mr-1.5">{category.icon}</span>
+                <span className="text-xs sm:text-sm">{category.label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
           
           {categories.map(category => (
             <TabsContent key={category.id} value={category.id} className="mt-0">
-              <div className="space-y-4">
+              <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {category.tips.map((tip, index) => (
                   <div 
                     key={tip.id} 
-                    className={`p-4 rounded-lg ${
+                    className={`p-3 sm:p-4 rounded-lg transform transition-all duration-200 hover:scale-[1.02] ${
                       index % 3 === 0 
                         ? 'bg-pink-50 border border-pink-100' 
                         : index % 3 === 1 
@@ -157,7 +152,7 @@ export function ParentingTips() {
                           : 'bg-amber-50 border border-amber-100'
                     }`}
                   >
-                    <h4 className={`font-medium text-sm mb-2 ${
+                    <h4 className={`font-medium text-sm sm:text-base mb-2 ${
                       index % 3 === 0 
                         ? 'text-pink-700' 
                         : index % 3 === 1 
@@ -166,7 +161,7 @@ export function ParentingTips() {
                     }`}>
                       {tip.title}
                     </h4>
-                    <p className={`text-sm ${
+                    <p className={`text-xs sm:text-sm ${
                       index % 3 === 0 
                         ? 'text-pink-600' 
                         : index % 3 === 1 
@@ -193,18 +188,18 @@ export function ParentingTips() {
           ))}
         </Tabs>
       </CardContent>
-      <CardFooter className="bg-neutral-50 border-t border-neutral-100 py-3 px-6 flex justify-between">
+      <CardFooter className="bg-neutral-50 border-t border-neutral-100 p-3 sm:p-4 flex flex-col sm:flex-row justify-between gap-2">
         <Button variant="link" size="sm" className="text-neutral-600 p-0 h-auto">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
-          See All Tips
+          <span className="text-xs sm:text-sm">See All Tips</span>
         </Button>
         <Button variant="link" size="sm" className="text-primary p-0 h-auto">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z" />
           </svg>
-          Share Tips
+          <span className="text-xs sm:text-sm">Share Tips</span>
         </Button>
       </CardFooter>
     </Card>

@@ -114,11 +114,11 @@ export function BabyGrowthVisual({ month, week }: BabyGrowthVisualProps) {
   
   return (
     <Card className="overflow-hidden border border-primary/10 shadow-md">
-      <div className="bg-gradient-to-r from-primary/10 to-primary/5 px-6 py-4 border-b border-primary/10">
-        <h3 className="text-xl font-semibold text-primary">
+      <div className="bg-gradient-to-r from-primary/10 to-primary/5 px-4 sm:px-6 py-3 sm:py-4 border-b border-primary/10">
+        <h3 className="text-lg sm:text-xl font-semibold text-primary">
           Your Baby at Week {currentWeek}
         </h3>
-        <p className="text-neutral-600 text-sm">
+        <p className="text-neutral-600 text-xs sm:text-sm">
           Watch as your little one grows and develops
         </p>
       </div>
