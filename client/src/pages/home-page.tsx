@@ -262,7 +262,7 @@ export default function HomePage() {
               </h3>
               <ProgressTracker 
                 currentWeek={currentMonth * 4}
-                dueDate={user?.dueDate}
+                dueDate={user?.dueDate || undefined}
               />
             </div>
             
