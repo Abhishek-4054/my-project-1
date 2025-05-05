@@ -1,11 +1,65 @@
 import express, { type Request, Response, NextFunction } from "express";
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import { Pool } from "pg";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Set up the PostgreSQL connection pool
+const pool = new Pool({
+  host: process.env.PG_HOST,
+  port: Number(process.env.PG_PORT),
+  user: process.env.PG_USER,
+  password: String(process.env.PG_PASSWORD),
+  database: process.env.PG_DB,
+});
 
+// Test the database connection
+pool.connect((err, client, release) => {
+  if (err) {
+    console.error("Error acquiring client", err.stack);
+  } else {
+    console.log("Database connected successfully");
+    client.query("SELECT NOW()", (err, result) => {
+      release();
+      if (err) {
+        console.error("Error executing query", err.stack);
+      } else {
+        console.log("Test query result:", result.rows);
+      }
+    });
+  }
+});
+
+// Configure connect-pg-simple
+const PgSession = connectPgSimple(session);
+
+// Create express app
+const app = express();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// --- IMPORTANT PART ---
+// Ensure the correct table structure for user_sessions
+app.use(
+  session({
+    store: new PgSession({
+      pool: pool,
+      tableName: "user_sessions", // custom table
+      createTableIfMissing:false,//auto-create table if missing
+    }),
+    secret: process.env.SESSION_SECRET || "your-session-secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
+  })
+);
+
+// Middleware to log request and response times
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -36,35 +90,45 @@ app.use((req, res, next) => {
   next();
 });
 
+// Register routes
 (async () => {
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
-
     res.status(status).json({ message });
     throw err;
   });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
+  app.get("/", (req, res) => {
+    if (!req.session) {
+      res.send("Session not found.");
+      return;
+    }
+    console.log("Session:", req.session);
+    res.send("Session is working!");
   });
+
+  const port = 5000;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}.`);
+  });
+  
+
+  server.listen(
+    {
+      port,
+      host: "0.0.0.0",
+    },
+    () => {
+      log(`Serving on port ${port}`);
+    }
+  );
 })();

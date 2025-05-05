@@ -142,7 +142,7 @@ export default function AuthPage() {
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="••••••••" {...field} value={field.value || ''} />
+                          <Input type="password" placeholder="Enter your Password" {...field} value={field.value || ''} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -185,7 +185,7 @@ export default function AuthPage() {
                       <FormItem>
                         <FormLabel>Full Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} value={field.value || ''} />
+                          <Input placeholder="Enter you Name" {...field} value={field.value || ''} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -228,7 +228,7 @@ export default function AuthPage() {
                         <FormItem>
                           <FormLabel>Password</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="••••••••" {...field} value={field.value || ''} />
+                            <Input type="password" placeholder="Add Password" {...field} value={field.value || ''} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -242,7 +242,7 @@ export default function AuthPage() {
                         <FormItem>
                           <FormLabel>Confirm Password</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="••••••••" {...field} value={field.value || ''} />
+                            <Input type="password" placeholder="Confirm your Password" {...field} value={field.value || ''} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -278,6 +278,7 @@ export default function AuthPage() {
                               value={field.value || ''}
                             >
                               <option value="">Select country</option>
+                              <option value="ind">India</option>
                               <option value="us">United States</option>
                               <option value="ca">Canada</option>
                               <option value="uk">United Kingdom</option>

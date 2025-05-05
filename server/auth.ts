@@ -6,6 +6,7 @@ import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
 import { User as SelectUser } from "@shared/schema";
+import { body, validationResult } from 'express-validator';
 
 declare global {
   namespace Express {
@@ -22,9 +23,7 @@ async function hashPassword(password: string) {
 }
 
 async function comparePasswords(supplied: string, stored: string) {
-  // Check if the stored password is in the correct format (hash.salt)
   if (!stored || !stored.includes('.')) {
-    // For demo user or if password isn't properly hashed yet
     return supplied === stored;
   }
   
@@ -68,7 +67,16 @@ export function setupAuth(app: Express) {
     done(null, user);
   });
 
-  app.post("/api/register", async (req, res, next) => {
+  app.post("/api/register", [
+    body('username').notEmpty().withMessage('Username is required'),
+    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+  ], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const existingUser = await storage.getUserByUsername(req.body.username);
     if (existingUser) {
       return res.status(400).send("Username already exists");
@@ -83,7 +91,6 @@ export function setupAuth(app: Express) {
       req.login(user, (err) => {
         if (err) return next(err);
         
-        // Don't send the hashed password back to the client
         const { password, ...userWithoutPassword } = user;
         res.status(201).json(userWithoutPassword);
       });
@@ -92,8 +99,10 @@ export function setupAuth(app: Express) {
     }
   });
 
-  app.post("/api/login", passport.authenticate("local"), (req, res) => {
-    // Don't send the hashed password back to the client
+  app.post("/api/login", [
+    body('username').notEmpty().withMessage('Username is required'),
+    body('password').notEmpty().withMessage('Password is required'),
+  ], passport.authenticate("local"), (req, res) => {
     const { password, ...userWithoutPassword } = req.user!;
     res.status(200).json(userWithoutPassword);
   });
@@ -108,7 +117,6 @@ export function setupAuth(app: Express) {
   app.get("/api/user", (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     
-    // Don't send the hashed password back to the client
     const { password, ...userWithoutPassword } = req.user!;
     res.json(userWithoutPassword);
   });

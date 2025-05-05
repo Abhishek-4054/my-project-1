@@ -2,6 +2,7 @@ import { pgTable, text, serial, integer, timestamp, varchar } from "drizzle-orm/
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Define the users table
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
@@ -12,18 +13,20 @@ export const users = pgTable("users", {
   country: text("country"),
 });
 
+// Define the media table
 export const media = pgTable("media", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
-  mediaType: text("media_type").notNull(), // "image" or "video"
+  mediaType: text("media_type").notNull(),
   month: integer("month").notNull(),
   week: integer("week"),
-  emotionTag: text("emotion_tag").notNull(), // "happy", "sleepy", "playful", "kicking", "calm"
+  emotionTag: text("emotion_tag").notNull(),
   url: text("url").notNull(),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Define the baby_info table
 export const babyInfo = pgTable("baby_info", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
@@ -33,16 +36,26 @@ export const babyInfo = pgTable("baby_info", {
   doctorName: text("doctor_name"),
 });
 
+// Define the premium_videos table
 export const premiumVideos = pgTable("premium_videos", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description"),
   thumbnailUrl: text("thumbnail_url"),
   videoUrl: text("video_url").notNull(),
-  isPremium: varchar("is_premium", { length: 5 }).default("true"), // Consider using a boolean type if your database supports it
+  isPremium: varchar("is_premium", { length: 5 }).default("true"),
 });
 
+// Define the user_sessions table (new)
+export const userSessions = pgTable("user_sessions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),  // Foreign key to users table
+  sessionToken: text("session_token").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  expiresAt: timestamp("expires_at").notNull(),
+});
 
+// Insert schemas for validation
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -71,13 +84,21 @@ export const insertBabyInfoSchema = createInsertSchema(babyInfo).pick({
 });
 
 export const insertPremiumVideoSchema = createInsertSchema(premiumVideos).pick({
-    title: true,
-    description: true,
-    thumbnailUrl: true,
-    videoUrl: true,
-    isPremium: true,
-})
+  title: true,
+  description: true,
+  thumbnailUrl: true,
+  videoUrl: true,
+  isPremium: true,
+});
 
+// Insert schema for user_sessions
+export const insertUserSessionSchema = createInsertSchema(userSessions).pick({
+  userId: true,
+  sessionToken: true,
+  expiresAt: true,
+});
+
+// Export types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 
@@ -90,6 +111,8 @@ export type BabyInfo = typeof babyInfo.$inferSelect;
 export type InsertPremiumVideo = z.infer<typeof insertPremiumVideoSchema>;
 export type PremiumVideo = typeof premiumVideos.$inferSelect;
 
+export type InsertUserSession = z.infer<typeof insertUserSessionSchema>;
+export type UserSession = typeof userSessions.$inferSelect;
 
 // Login data type
 export type LoginData = Pick<InsertUser, "username" | "password">;

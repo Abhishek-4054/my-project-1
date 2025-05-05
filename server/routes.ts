@@ -7,6 +7,20 @@ import { fromZodError } from "zod-validation-error";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import session from 'express-session'; 
+import connectPgSimple from 'connect-pg-simple';
+import { Pool } from 'pg';
+
+// PostgreSQL session store setup
+const pool = new Pool({
+  host: process.env.PG_HOST,
+  port: Number(process.env.PG_PORT),
+  user: process.env.PG_USER,
+  password: String(process.env.PG_PASSWORD),
+  database: process.env.PG_DB,
+});
+
+const PgSession = connectPgSimple(session);
 
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), 'uploads');
@@ -40,10 +54,28 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Sets up /api/register, /api/login, /api/logout, /api/user
+  // Session Middleware: Ensure it is before any routes using `req.session`
+  app.use(
+    session({
+      store: new PgSession({
+        pool: pool, 
+        tableName: 'sessions', // Store sessions in PostgreSQL
+      }),
+      secret: 'your-session-secret', // Replace with a real secret in production
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        secure: false, // Set to true if using HTTPS in production
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,  // 1 day expiration time
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000) // Ensure expires is set
+      },
+    })
+  );
+
   setupAuth(app);
 
-  // Get baby info
+  // Protected Route Example (e.g. baby-info)
   app.get('/api/baby-info', async (req: Request, res: Response) => {
     if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
     
@@ -55,30 +87,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Create or update baby info
-  app.post('/api/baby-info', async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
-    
-    try {
-      const data = {
-        ...req.body,
-        userId: req.user!.id
-      };
-      
-      const babyInfo = await storage.updateBabyInfo(req.user!.id, data);
-      res.json(babyInfo);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to update baby info' });
-    }
-  });
-
-  // Upload media
+  // Upload Media
   app.post('/api/media', upload.single('file'), async (req: Request, res: Response) => {
     if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
     
     try {
       const validationResult = uploadMediaSchema.safeParse(req.body);
-      
       if (!validationResult.success) {
         return res.status(400).json({ 
           message: fromZodError(validationResult.error).message 
@@ -90,7 +104,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const url = `/uploads/${req.file.filename}`;
-      
       const mediaData = {
         ...validationResult.data,
         userId: req.user!.id,
@@ -104,94 +117,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all media for the current user
-  app.get('/api/media', async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
-    
-    try {
-      const media = await storage.getMediaByUser(req.user!.id);
-      res.json(media);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch media' });
-    }
-  });
-
-  // Get recent media for the current user
-  app.get('/api/media/recent', async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
-    
-    const limit = req.query.limit ? parseInt(req.query.limit as string) : 6;
-    
-    try {
-      const media = await storage.getRecentMediaByUser(req.user!.id, limit);
-      res.json(media);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch recent media' });
-    }
-  });
-
-  // Get media by month
-  app.get('/api/media/month/:month', async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
-    
-    const month = parseInt(req.params.month);
-    if (isNaN(month) || month < 1 || month > 9) {
-      return res.status(400).json({ message: 'Invalid month parameter' });
-    }
-    
-    try {
-      const media = await storage.getMediaByUserAndMonth(req.user!.id, month);
-      res.json(media);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch media for month' });
-    }
-  });
-
-  // Get media by month and emotion
-  app.get('/api/media/month/:month/emotion/:emotion', async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
-    
-    const month = parseInt(req.params.month);
-    if (isNaN(month) || month < 1 || month > 9) {
-      return res.status(400).json({ message: 'Invalid month parameter' });
-    }
-    
-    const emotion = req.params.emotion;
-    
-    try {
-      const media = await storage.getMediaByUserMonthAndEmotion(req.user!.id, month, emotion);
-      res.json(media);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch media' });
-    }
-  });
-
-  // Get a specific media item
-  app.get('/api/media/:id', async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
-    
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) {
-      return res.status(400).json({ message: 'Invalid media ID' });
-    }
-    
-    try {
-      const mediaItem = await storage.getMediaById(id);
-      
-      if (!mediaItem) {
-        return res.status(404).json({ message: 'Media not found' });
-      }
-      
-      if (mediaItem.userId !== req.user!.id) {
-        return res.status(403).json({ message: 'Unauthorized access to media' });
-      }
-      
-      res.json(mediaItem);
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch media item' });
-    }
-  });
-
   // Serve uploaded files
   app.use('/uploads', (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -200,30 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     next();
   }, express.static(uploadDir));
 
-  // Update user profile
-  app.post('/api/profile', async (req: Request, res: Response) => {
-    if (!req.isAuthenticated()) return res.status(401).send('Unauthorized');
-    
-    try {
-      const updatedUser = await storage.updateUser(req.user!.id, req.body);
-      if (!updatedUser) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      
-      // Update the session with the new user data
-      req.login(updatedUser, (err) => {
-        if (err) return res.status(500).json({ message: 'Session update failed' });
-        
-        // Don't send the password back to the client
-        const { password, ...userWithoutPassword } = updatedUser;
-        res.json(userWithoutPassword);
-      });
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to update profile' });
-    }
-  });
-
+  // Creating the HTTP server
   const httpServer = createServer(app);
-
   return httpServer;
 }

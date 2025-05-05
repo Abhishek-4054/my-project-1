@@ -61,10 +61,17 @@ export function Header() {
               Dashboard
             </button>
             <button 
-              onClick={() => setLocation('/timeline')}
+              onClick={() => setLocation('/milestones')}
               className="px-3 py-2 text-sm font-medium rounded-md text-neutral-600 hover:bg-primary/5 hover:text-primary transition-colors"
             >
-              Timeline
+             Scans and Reports
+            </button>
+            <button 
+              onClick={() => setLocation('/memories')}
+              className="px-3 py-2 text-sm font-medium rounded-md text-neutral-600 hover:bg-primary/5 hover:text-primary transition-colors"
+            >
+              Chats
+          
             </button>
             <button 
               onClick={() => setLocation('/upload')}

@@ -1,35 +1,75 @@
-
 import { Header } from '@/components/layout/header';
 import { Sidebar } from '@/components/layout/sidebar';
 import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-export default function MilestonesPage() {
-  const milestones = [
-    { week: 12, title: "First Trimester Complete", description: "Major organs and structures are formed" },
-    { week: 20, title: "Halfway Point", description: "Detailed anatomy scan and gender reveal possible" },
-    { week: 24, title: "Viability", description: "Baby reaches point of potential survival outside womb" },
-    { week: 28, title: "Third Trimester", description: "Final stage of pregnancy begins" },
-    { week: 37, title: "Full Term", description: "Baby is considered full term and ready for arrival" }
+export default function PatientPage() {
+  const reports = [
+    { title: "Blood Test Report", description: "Detailed blood test results including CBC, lipid profile, etc." },
+    { title: "Ultrasound Report", description: "Ultrasound images and findings" },
+  ];
+
+  const scans = [
+    { title: "MRI Scan", description: "MRI scan images and analysis" },
+    { title: "CT Scan", description: "CT scan images and findings" },
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-50">
       <Header />
       <div className="flex flex-col md:flex-row flex-1">
         <Sidebar />
-        <main className="flex-1 md:pl-64 pt-4 pb-20">
-          <div className="px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-neutral-500 font-heading mb-6">Pregnancy Milestones</h2>
-            <div className="space-y-4">
-              {milestones.map((milestone, index) => (
-                <Card key={index}>
-                  <CardContent className="p-4">
-                    <h3 className="text-lg font-semibold">Week {milestone.week}: {milestone.title}</h3>
-                    <p className="text-gray-600 mt-2">{milestone.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+        <main className="flex-1 md:pl-64 pt-6 pb-20">
+          <div className="px-6 lg:px-12">
+            <section>
+              <h2 className="text-4xl font-semibold text-gray-800 mb-8">Reports</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {reports.map((report, index) => (
+                  <Card
+                    key={index}
+                    className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow rounded-2xl"
+                  >
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-medium text-gray-900">{report.title}</h3>
+                      <p className="text-sm text-gray-600 mt-2">{report.description}</p>
+                      <div className="mt-5 flex gap-3">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 transition">
+                          View
+                        </Button>
+                        <Button className="bg-green-600 hover:bg-green-700 text-white rounded-md px-4 py-2 transition">
+                          Download
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
+
+            <section className="mt-14">
+              <h2 className="text-4xl font-semibold text-gray-800 mb-8">Scans</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {scans.map((scan, index) => (
+                  <Card
+                    key={index}
+                    className="bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow rounded-2xl"
+                  >
+                    <CardContent className="p-6">
+                      <h3 className="text-lg font-medium text-gray-900">{scan.title}</h3>
+                      <p className="text-sm text-gray-600 mt-2">{scan.description}</p>
+                      <div className="mt-5 flex gap-3">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 transition">
+                          View
+                        </Button>
+                        <Button className="bg-green-600 hover:bg-green-700 text-white rounded-md px-4 py-2 transition">
+                          Download
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </section>
           </div>
         </main>
       </div>
